@@ -64,11 +64,29 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClick(View view) {
+        AgregarCantacto(
+                txtNombre.getText().toString(),
+                txtTelefono.getText().toString(),
+                txtEmail.getText().toString(),
+                txtDireccion.getText().toString()
+        );
+
         String mesg = String.format("%s ha sido agregado a la lista!", txtNombre.getText());
         Toast.makeText(this,mesg,Toast.LENGTH_SHORT).show();
         btn_agregar.setEnabled(false);
+        iniciarlizarListView();
         limpiarCampos();
+
     }
+
+    private void iniciarlizarListView() {
+
+    }
+
+    private void AgregarCantacto(String nombre, String telefono, String email, String direccion) {
+        contactos.add(new Contacto(nombre,telefono,email,direccion));
+    }
+
 
     private void limpiarCampos() {
         txtNombre.getText().clear();
