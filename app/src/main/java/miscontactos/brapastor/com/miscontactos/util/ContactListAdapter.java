@@ -10,9 +10,6 @@ import java.util.List;
 
 import miscontactos.brapastor.com.miscontactos.R;
 
-/**
- * Created by BRAPASTOR on 14/01/2015.
- */
 public class ContactListAdapter extends ArrayAdapter<Contacto>{
     private Activity ctx;
 

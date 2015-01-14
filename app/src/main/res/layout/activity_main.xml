@@ -40,8 +40,19 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="Crear Contacto"
                         android:id="@+id/textView"
+                        android:gravity="center"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true" />
+
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:id="@+id/imageView"
+                         android:layout_marginTop="10dp"
+                        android:scaleType="fitCenter"
+                        android:onClick="onImgclick"
+                        android:src="@drawable/ic_launcher"
+                        android:layout_gravity="center_horizontal" />
 
                     <EditText
                         android:layout_width="fill_parent"
