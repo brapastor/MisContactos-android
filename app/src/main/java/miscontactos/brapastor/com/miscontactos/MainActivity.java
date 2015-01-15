@@ -1,6 +1,7 @@
 package miscontactos.brapastor.com.miscontactos;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -63,6 +64,7 @@ public class MainActivity extends ActionBarActivity {
         txtTelefono = (EditText) findViewById(R.id.cmpTelefono);
         txtEmail = (EditText) findViewById(R.id.cmpEmail);
         txtDireccion = (EditText) findViewById(R.id.cmpDireccion);
+        imgViewContacto = (ImageView) findViewById(R.id.imgViewContacto);
         contactsListView = (ListView) findViewById(R.id.listView);
 
         txtNombre.addTextChangedListener(new TextChangedListener(){
@@ -79,7 +81,8 @@ public class MainActivity extends ActionBarActivity {
                 txtNombre.getText().toString(),
                 txtTelefono.getText().toString(),
                 txtEmail.getText().toString(),
-                txtDireccion.getText().toString()
+                txtDireccion.getText().toString(),
+                (Uri) imgViewContacto.getTag() //obtenemos el atributo TAG con la Uri de la imagen
         );
 
         String mesg = String.format("%s ha sido agregado a la lista!", txtNombre.getText());
@@ -90,9 +93,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private void AgregarCantacto(String nombre, String telefono, String email, String direccion) {
 
-        Contacto nuevo= new Contacto(nombre,telefono,email,direccion);
+    private void AgregarCantacto(String nombre, String telefono, String email, String direccion, Uri imageUri) {
+
+        Contacto nuevo= new Contacto(nombre,telefono,email,direccion, imageUri);
         adapter.add(nuevo);
     }
 
@@ -101,22 +105,34 @@ public class MainActivity extends ActionBarActivity {
         txtTelefono.getText().clear();
         txtEmail.getText().clear();
         txtDireccion.getText().clear();
+        //Restablesca la imagen predeterminado del contacto
+        imgViewContacto.setImageResource(R.drawable.ic_launcher);
         txtNombre.requestFocus();
     }
 
     public void onImgclick(View view) {
         Intent intent = null;
-        if(Build.VERSION.SDK_INT < 19){
-            //Android jellyBean 4.3 y anteriores
+        // Verificamos la versión de la plataforma
+        if (Build.VERSION.SDK_INT < 19) {
+            // Android JellyBean 4.3 y anteriores
             intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
-        }
-        else {
+        } else {
+            // Android KitKat 4.4 o superior
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-
         }
         intent.setType("image/*");
         startActivityForResult(intent, request_code);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == request_code) {
+            imgViewContacto.setImageURI(data.getData());
+            // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
+            imgViewContacto.setTag(data.getData());
+        }
     }
 }
